@@ -35,80 +35,76 @@ function bigExec(slot){
 	}	
 }
 
+
+
 function victoryCheck(cx,cy){
+	checking = true;
+
 	var hPoints = 1;	// Horizontal
 	var vPoints = 1;	// Vertical
 	var dpPoints = 1;	// Diagnol Positive (/)
 	var dnPoints = 1;	// Diagnol Negative (\)
 
-	//Victory Check Left
-	for (i = (cx-1); i >= 0; i--){
+	function checkPlayerMatch(direction){
 		if (masterGrid[i][cy]==player){
-			hPoints++;
-			//alert("pointsbruh " + hPoints); //test if points are applying
+			switch(direction){
+				case "horizontal":
+					hPoints++;
+					break;
+				case "vertical":
+					vPoints++;
+					break;
+				case "diagnol positive":
+					dpPoints++;
+					break;
+				case "diagnol negative":
+					dnPoints++;
+					break;
+			}
 		}else{
-			break;
+			checking = false;
 		}
 	}
 
-	//Victory Check Right
-	for (i = (cx+1); i <= 6; i++){
-		if (masterGrid[i][cy]==player){
-			hPoints++;
-		}else{
-			break;
+		//Victory Check Left
+		for (i = (cx-1); (i >= 0) && (checking); i--){
+			checkPlayerMatch("horizontal")
 		}
-	}
 
-	//Victory Check Down
-	if (cy < 3){	//Only check if chip lands in top 3 rows 'cause gravity and collision and stuff.
-		for (i = cy; i < 5; i++){
-			if (masterGrid[cx][i+1]==player){
-				vPoints++;
-			}else{
-				break;
+		//Victory Check Right
+		for (i = (cx+1); (i <= 6) && (checking); i++){
+			checkPlayerMatch("horizontal")
+		}
+
+		//Victory Check Down
+		if (cy < 3){	//Only check if chip lands in top 3 rows 'cause gravity and collision and stuff.
+			for (i = cy; (i < 5) && (checking); i++){
+				checkPlayerMatch("vertical")
 			}
 		}
-	}
 
-	//Victory Check Diagnol Positive Up (^ /)
-	for (i = (cx+1), j = (cy-1); (i <= 6) && (j >= 0); i++, j--){
-		if (masterGrid[i][j] == player){
-			dpPoints++;
-		}else{
-			break;
+		//Victory Check Diagnol Positive Up (^ /)
+		for (i = (cx+1), j = (cy-1); (i <= 6) && (j >= 0) && (checking); i++, j--){
+			checkPlayerMatch("diagnol positive")
 		}
-	}
 
-	//Victory Check Diagnol Positve Down (v /)
-	for (i = (cx-1), j = (cy+1); (i >= 0) && (j <= 5); i--, j++){
-		if (masterGrid[i][j] == player){
-			dpPoints++;
-		}else{
-			break;
+		//Victory Check Diagnol Positve Down (v /)
+		for (i = (cx-1), j = (cy+1); (i >= 0) && (j <= 5) && (checking); i--, j++){
+			checkPlayerMatch("diagnol positive")
 		}
-	}
 
-		//Victory Check Diagnol Negative Up (^ \)
-	for (i = (cx-1), j = (cy-1); (i >= 0) && (j >= 0); i--, j--){
-		if (masterGrid[i][j] == player){
-			dnPoints++;
-		}else{
-			break;
+			//Victory Check Diagnol Negative Up (^ \)
+		for (i = (cx-1), j = (cy-1); (i >= 0) && (j >= 0) && (checking); i--, j--){
+			checkPlayerMatch("diagnol negative")
 		}
-	}
 
-	//Victory Check Diagnol Negative Down (v \)
-	for (i = (cx+1), j = (cy+1); (i <= 6) && (j <= 5); i++, j++){
-		if (masterGrid[i][j] == player){
-			dnPoints++;
-		}else{
-			break;
+		//Victory Check Diagnol Negative Down (v \)
+		for (i = (cx+1), j = (cy+1); (i <= 6) && (j <= 5) && (checking); i++, j++){
+			checkPlayerMatch("diagnol negative")
 		}
-	}
-	
-	if (hPoints >= 4 || vPoints >= 4 || dpPoints >= 4 || dnPoints >= 4){
-		winner(player);
+
+		if (hPoints >= 4 || vPoints >= 4 || dpPoints >= 4 || dnPoints >= 4){
+			winner(player);
 	}
 }
 
@@ -221,3 +217,5 @@ function drawGrid(){
 		}
 	}
 }
+//lkjasdlfjksdlfk
+//testing git...
